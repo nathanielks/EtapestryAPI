@@ -39,8 +39,9 @@ class EtapestryAccount extends EtapestryAPI
 	* @return array
 	* @access public
 	*/
-	public function getAccount()
+	public function getAccount( $refId )
 	{
+		$this->account = parent::nusoapCall("getAccount", array($refId));
 		return $this->account;
 	}
 
@@ -62,10 +63,10 @@ class EtapestryAccount extends EtapestryAPI
 	* @return array account information of duplicate account or null
 	* @access public
 	*/
-	public function getDuplicateAccount()
+	public function getDuplicateAccount($account)
 	{	
 		// Invoke getDuplicateAccount method
-		$response = parent::nusoapCall("getDuplicateAccount", array($this->account));
+		$response = parent::nusoapCall("getDuplicateAccount", array($account));
 		
 		return $response;
 	}	
@@ -89,9 +90,9 @@ class EtapestryAccount extends EtapestryAPI
 	 * @return string the unique database ref of the newly created account 
 	 * @access public
 	 */
-	public function addAccount()
+	public function addAccount($account, $createFieldAndValues = false)
 	{
-		$response = parent::nusoapCall("addAccount", array($this->account, false));
+		$response = parent::nusoapCall("addAccount", array($account, $createFieldAndValues));
 		
 		return $response;
 	}

@@ -52,6 +52,7 @@ class EtapestryAPI
 		$this->endpoint = ($endpoint ? $endpoint : (defined('ETAPESTRYAPI_ENDPOINT') ? ETAPESTRYAPI_ENDPOINT : "https://sna.etapestry.com/v2messaging/service?WSDL"));
 		
 		$this->createNuSOAPClient();
+		$this->login();
 	}
 	
 	/**
@@ -67,6 +68,7 @@ class EtapestryAPI
 
 		// Did an error occur?
 		if ($this->hasFaultOrError($this->nsc)) {
+			echo 'error occured!';
 			return false;
 		}
 		
