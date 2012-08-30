@@ -19,26 +19,20 @@ class Error_Logger {
 	
 	function show_log() {
 		
+		$this->log = array_unique( $this->log );
 		?>
-		<div class="postbox">
-			<p>Oops! There seems to be an issue. Mind taking a look? <small><a href="mailto:info@hopeunlimited.org">Contact us</a> if you have a question.</small></p>
-			<ul class="errors">
-				<?php
-					$this->log = array_unique( $this->log );
-					foreach ($this->log as $log) {
-						$explanation = '';
-						switch ( $log ){
-							case 'Credit Card Process Failure (000000 - Internal Server Error)':
-								$explanation = 'Check your credit card details. You could have mistyped a card number, incorrect expiration date, etc etc.';
-							break;
-						}
-						echo '<li>' . $log . '<small>' . $explanation . '</small></li>';
-					}
-				?>
-			</ul>
-		</div>
+
+		<ul class="errors">
+
+		<?php	
+		foreach ($this->log as $log) {
+			echo '<li>' . $log . '</li>';
+		}
+		?>
+
+		</ul> 
 		<?php
-		
+
 		$this->log = array();
 	}
 
