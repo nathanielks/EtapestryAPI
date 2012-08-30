@@ -5,19 +5,33 @@
  * @package EtapestryAPI
  * @author Danny Bouman at Howard County Library System <dannybb@gmail.com>
  * @author Anshul Meena at Howard County Library System <anshulmeena1@gmail.com>
+ * @author Nathaniel Schweinberg at Fight the Current 
+ * <nathaniel@fightthecurrent.org>
  */
+
 require dirname(__FILE__) . '/lib/nusoap.php';
 require dirname(__FILE__) . '/lib/utils.php';
 require dirname(__FILE__) . '/lib/EtapestryAccount.php';
 require dirname(__FILE__) . '/lib/EtapestryJournal.php';
+
+// Log 
+require dirname(__FILE__) . '/lib/class-error-logger.php';
+$GLOBALS['log'] = new Error_Logger();
 
 /**
  * Exception class for eTapestry PHP API.
  *
  * @package EtapestryAPI
  */
+
 class EtapestryAPIException extends Exception
 {
+
+	public function log_error($message){
+
+		$log = $GLOBALS['log'];
+		$log->add($message);	
+	}
 }
 
 class EtapestryAPI
@@ -26,7 +40,8 @@ class EtapestryAPI
      * NuSOAP client object
      */
 	public $nsc;
-	
+
+	public $test;
 	/**
 	 * Number of times to retry if connection to eTapestry fails
 	 */
@@ -68,7 +83,6 @@ class EtapestryAPI
 
 		// Did an error occur?
 		if ($this->hasFaultOrError($this->nsc)) {
-			echo 'error occured!';
 			return false;
 		}
 		
@@ -122,9 +136,9 @@ class EtapestryAPI
 	 * 
 	 * @param object $nsc NuSoap client
 	 */
-	public function hasFaultOrError($nsc, $showErrors = TRUE)
+	public function hasFaultOrError($nsc, $showErrors = false)
 	{	
-		$this->error = NULL;	
+		//$this->error = NULL;	
 	
 		try 
 		{
@@ -146,6 +160,7 @@ class EtapestryAPI
 		catch (EtapestryAPIException $e)
 		{
 			$this->error = $e->getMessage();
+			$e->log_error($e->getMessage());
 			if ($showErrors) {
 				echo $this->error."\n";
 			}
@@ -202,6 +217,10 @@ class EtapestryAPI
 		}
 		
 		return $response;
+	}
+
+	public function return_error (){
+		return $this->error;
 	}
 	
 }

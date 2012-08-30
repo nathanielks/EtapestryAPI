@@ -36,14 +36,15 @@ class EtapestryJournal extends EtapestryAPI
 	/**
 	 * addRecurringGiftSchedule 
 	 * 
-	 * @param mixed $transaction 
+	 * @param mixed $rgs 
+	 * @param mixed $createFieldAndValues 
 	 * @access public
 	 * @return string The unique database ref of the newly created recurring 
 	 * gift schedule transaction.
 	 */
-	public function addRecurringGiftSchedule( $transaction )
+	public function addRecurringGiftSchedule( $rgs, $createFieldAndValues = false )
 	{	
-		$response = parent::nusoapCall("addRecurringGiftSchedule", array($transaction));
+		$response = parent::nusoapCall("addRecurringGiftSchedule", array($rgs, $createFieldAndValues));
 		
 		return $response;
 	}
